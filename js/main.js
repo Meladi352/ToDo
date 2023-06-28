@@ -37,24 +37,27 @@ function addTask (event){
 }
 
 function deleteTask(event){
-    
-    if (event.target.dataset.action === 'delete') {
-        
-        const parenNode = event.target.closest('.list-group-item');
-        parenNode.remove();
-    }
+
+    if(event.target.dataset.action !== 'delete') return;
+
+    const parenNode = event.target.closest('.list-group-item');
+    parenNode.remove();
 
     if(tasksList.children.length === 1) {
-        emptyList.classList.remove('none');
+            emptyList.classList.remove('none');
     }
 }
 
+    
+
+
 function doneTask(event){
-    if (event.target.dataset.action === "done"){
-      const parenNode = event.target.closest('.list-group-item'); 
-      
-     const taskTitle = parenNode.querySelector('.task-title');
-     taskTitle.classList.toggle('task-title--done');
-    }
+    if (event.target.dataset.action !== "done") return;
+
+    const parenNode = event.target.closest('.list-group-item'); 
+    
+    const taskTitle = parenNode.querySelector('.task-title');
+    taskTitle.classList.toggle('task-title--done');
+    
 }
 
