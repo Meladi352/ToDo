@@ -55,6 +55,14 @@ function deleteTask(event){
     if(event.target.dataset.action !== 'delete') return;
 
     const parenNode = event.target.closest('.list-group-item');
+
+    const id = Number(parenNode.id);
+
+    const index = tasks.findIndex((task) => task.id === id);
+
+    tasks.splice(index, 1);
+
+
     parenNode.remove();
 
     if(tasksList.children.length === 1) {
