@@ -4,6 +4,31 @@ const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
 
 let tasks = [];
+
+if(localStorage.getItem('tasks')){
+   tasks = JSON.parse(localStorage.getItem('tasks'));
+}
+
+tasks.forEach(function (task){
+    const cssClass =task.done ? "task-title task-title--done" : "task-title";
+
+
+    const taskHTML = `
+             <li id = "${task.id}"class="list-group-item d-flex justify-content-between task-item">
+                 <span class="${cssClass}">${task.text}</span>
+                 <div class="task-item__buttons">
+                     <button type="button" data-action="done" class="btn-action">
+                         <img src="./img/tick.svg" alt="Done" width="18" height="18">
+                     </button>
+                     <button type="button" data-action="delete" class="btn-action">
+                         <img src="./img/cross.svg" alt="Done" width="18" height="18">
+                 </button>
+             </div>
+         </li>`;
+ 
+     tasksList.insertAdjacentHTML('beforeend', taskHTML);
+})
+
 checkEmptyList();
 
 form.addEventListener('submit', addTask);
@@ -25,6 +50,10 @@ function addTask (event){
 
     tasks.push(newTask);
 
+    saveToLocalStorage();
+
+    
+
     const cssClass = newTask.done ? "task-title task-title--done" : "task-title";
 
 
@@ -44,7 +73,9 @@ function addTask (event){
     tasksList.insertAdjacentHTML('beforeend', taskHTML);
 
     taskInput.value = "";
+
     taskInput.focus();
+
     checkEmptyList();
 }
 
@@ -60,9 +91,12 @@ function deleteTask(event){
 
     tasks.splice(index, 1);
 
+    saveToLocalStorage();
 
     parenNode.remove();
+
     checkEmptyList();
+
 
 }
 
@@ -77,6 +111,8 @@ function doneTask(event){
     const task = tasks.find((task) => task.id === id);
 
     task.done = !task.done
+
+    saveToLocalStorage();
     
     const taskTitle = parenNode.querySelector('.task-title');
     taskTitle.classList.toggle('task-title--done');
@@ -96,5 +132,9 @@ function checkEmptyList(){
         const emptyListEl = document.querySelector('#emptyList');
         emptyListEl ? emptyListEl.remove() : null;
     }
+}
+
+function saveToLocalStorage(){
+    localStorage.setItem('tasks', JSON.stringify(tasks))
 }
 
