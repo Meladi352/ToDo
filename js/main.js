@@ -74,6 +74,13 @@ function doneTask(event){
     if (event.target.dataset.action !== "done") return;
 
     const parenNode = event.target.closest('.list-group-item'); 
+
+
+    const id = Number(parenNode.id);
+
+    const task = tasks.find((task) => task.id === id);
+
+    task.done = !task.done
     
     const taskTitle = parenNode.querySelector('.task-title');
     taskTitle.classList.toggle('task-title--done');
