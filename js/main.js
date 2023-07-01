@@ -4,6 +4,7 @@ const tasksList = document.querySelector('#tasksList');
 const emptyList = document.querySelector('#emptyList');
 
 let tasks = [];
+checkEmptyList();
 
 form.addEventListener('submit', addTask);
 
@@ -14,7 +15,7 @@ tasksList.addEventListener('click', doneTask);
 function addTask (event){
     event.preventDefault();
     
-   const taskText = taskInput.value;
+    const taskText = taskInput.value;
 
     const newTask = {
         id: Date.now(),
@@ -44,10 +45,7 @@ function addTask (event){
 
     taskInput.value = "";
     taskInput.focus();
-
-    if(tasksList.children.length > 1) {
-        emptyList.classList.add('none');
-    }
+    checkEmptyList();
 }
 
 function deleteTask(event){
@@ -64,10 +62,8 @@ function deleteTask(event){
 
 
     parenNode.remove();
+    checkEmptyList();
 
-    if(tasksList.children.length === 1) {
-            emptyList.classList.remove('none');
-    }
 }
 
 function doneTask(event){
@@ -85,5 +81,20 @@ function doneTask(event){
     const taskTitle = parenNode.querySelector('.task-title');
     taskTitle.classList.toggle('task-title--done');
     
+}
+
+function checkEmptyList(){
+    if (tasks.length === 0) {
+        const emptyListHTML = `<li id="emptyList" class="list-group-item empty-list">
+        <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3">
+        <div class="empty-list__title">To-do list is empty</div>
+    </li>`;
+    tasksList.insertAdjacentHTML('afterbegin', emptyListHTML);
+    }
+
+    if(tasks.length > 0){
+        const emptyListEl = document.querySelector('#emptyList');
+        emptyListEl ? emptyListEl.remove() : null;
+    }
 }
 
